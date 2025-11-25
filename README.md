@@ -44,50 +44,79 @@ Maximizar o retorno total dos investimentos, que é composto por:
 ### Passo a Passo
 
 1. **Clone ou baixe o repositório**
-```powershell
-git clone URL_DO_Repositorio
+```bash
+git clone URL_DO_REPOSITORIO
+cd po_trabalho_final
 ```
 
 2. **Crie um ambiente virtual (recomendado)**
-```powershell
+```bash
+# macOS/Linux
+python3 -m venv venv
+
+# Windows
 python -m venv venv
 ```
 
 3. **Ative o ambiente virtual**
-```powershell
+```bash
+# macOS/Linux
+source venv/bin/activate
+
+# Windows (PowerShell)
 .\venv\Scripts\Activate.ps1
+
+# Windows (Command Prompt)
+venv\Scripts\activate.bat
 ```
 
-> **Nota**: Se você receber um erro de política de execução, execute:
+> **Nota para Windows**: Se você receber um erro de política de execução, execute:
 > ```powershell
 > Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 > ```
 
 4. **Instale as dependências**
-```powershell
+```bash
 pip install pulp
 ```
 
 ### Instalação Alternativa (sem ambiente virtual)
-```powershell
+```bash
+# macOS/Linux
+pip3 install pulp
+
+# Windows
 pip install pulp
 ```
 
 ## 🚀 Como Rodar
 
 ### Método 1: Executar diretamente
-```powershell
+```bash
+# macOS/Linux
+python3 modelo_PO_final.py
+
+# Windows
 python modelo_PO_final.py
 ```
 
 ### Método 2: Com ambiente virtual ativo
-```powershell
+```bash
+# macOS/Linux
+source venv/bin/activate
+python modelo_PO_final.py
+
+# Windows
 .\venv\Scripts\Activate.ps1
 python modelo_PO_final.py
 ```
 
-### Método 3: Especificando o caminho completo do Python
-```powershell
+### Método 3: Especificando o caminho completo
+```bash
+# macOS/Linux
+./venv/bin/python modelo_PO_final.py
+
+# Windows
 python.exe .\modelo_PO_final.py
 ```
 
@@ -97,14 +126,14 @@ Ao executar o programa, você verá uma saída similar a:
 
 ```
 Status: 1
-Valor ótimo: 560000.0
+Valor ótimo: 398400.0
 
 Decisão por projeto:
-Projeto 1: y=1.0, x=60000.0
+Projeto 1: y=0.0, x=0.0
 Projeto 2: y=1.0, x=40000.0
-Projeto 3: y=1.0, x=0.0
+Projeto 3: y=1.0, x=60000.0
 Projeto 4: y=1.0, x=30000.0
-Projeto 5: y=0.0, x=0.0
+Projeto 5: y=1.0, x=0.0
 ```
 
 ### Interpretação dos Resultados
@@ -139,6 +168,8 @@ x_i ≤ M × y_i, ∀i
 ```
 (Garante que x_i só pode ser positivo se y_i = 1)
 
+> **Big-M**: É uma constante muito grande (neste caso, igual ao orçamento total) que permite modelar restrições lógicas. Quando y_i = 0, força x_i = 0. Quando y_i = 1, permite que x_i assuma qualquer valor válido.
+
 3. **Dependência Lógica**:
 ```
 y_3 ≤ y_4
@@ -169,6 +200,20 @@ y_3 ≤ y_4
 
 # 4. RESULTADOS
 #    - Exibição da solução ótima
+```
+
+## ✅ Verificação da Instalação
+
+Para verificar se tudo foi instalado corretamente:
+
+```bash
+# Verificar versão do Python
+python3 --version  # macOS/Linux
+python --version   # Windows
+
+# Verificar se o PuLP foi instalado
+python3 -c "import pulp; print('PuLP instalado com sucesso!')"  # macOS/Linux
+python -c "import pulp; print('PuLP instalado com sucesso!')"   # Windows
 ```
 
 ## 🔍 Personalização
@@ -204,17 +249,30 @@ L = {
 ## 🛠️ Solução de Problemas
 
 ### Erro: "No module named 'pulp'"
-**Solução**: Instale o PuLP com `pip install pulp`
+**Solução**: 
+- Certifique-se de que o ambiente virtual está ativo
+- Instale o PuLP: `pip install pulp` ou `pip3 install pulp`
 
-### Erro: "Cannot run scripts on this system"
+### Erro: "python: command not found" (macOS/Linux)
+**Solução**: Use `python3` em vez de `python`
+
+### Erro: "Cannot run scripts on this system" (Windows)
 **Solução**: Ajuste a política de execução do PowerShell:
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
+### Erro: "externally-managed-environment" (macOS/Linux)
+**Solução**: Use um ambiente virtual:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install pulp
+```
+
 ### Solver não encontrado
 **Solução**: O PuLP vem com solver padrão (CBC). Se necessário, instale outros solvers:
-```powershell
+```bash
 pip install pulp[cbc]
 ```
 
